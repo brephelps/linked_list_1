@@ -7,6 +7,18 @@ class LinkedListNode
   end
 end
 
+def print_values(list_node)
+  if list_node
+    print "#{list_node.value} --> "
+    print_values(list_node.next_node)
+  else
+    print "nil\n"
+    return
+  end
+end
+
+####### create stack ########
+
 class Stack
   attr_accessor :data
 
@@ -23,37 +35,24 @@ class Stack
   # Remove the last item that was pushed onto the
   # stack and return the value to the user
   def pop
-    if is_empty?
+    # check if stack is empty
+    if @data.nil?
       return "nil"
-    else
-      #assign variable for current value
-      x = @data.value
-      # iterate to next node
+    elsif @data.next_node != nil
+      value = @data.value
       @data = @data.next_node
-      #return current value
-      return x
+      return value
+    else
+      value = @data.value
+      @data = @data.next_node
+      return value
     end
-  end
-
-  # check if stack is empty
-  def is_empty?
-    @data.nil?
-  end
-end
-
-
-def print_values(list_node)
-  if list_node
-    print "#{list_node.value} --> "
-    print_values(list_node.next_node)
-  else
-    print "nil\n"
-    return
   end
 end
 
 def reverse_list(list_node)
   stack = Stack.new
+  final_stack = Stack.new
 
   while list_node
     # need to parse out the value to only input that to Push
@@ -61,8 +60,13 @@ def reverse_list(list_node)
     # iterate to the next node by mapping .next_node to current data id
     list_node = list_node.next_node
   end
-  # display final list
-  return stack.data
+  
+    while stack.data
+      # need to create a new list with the popped values
+      final_stack = LinkedListNode.new(stack.pop, stack.data)
+      # return final list 
+      return final_stack
+    end
 end
 
 
@@ -77,6 +81,4 @@ puts "-------"
 
 revlist = reverse_list(node3)
 print_values(revlist)
-
-
 
